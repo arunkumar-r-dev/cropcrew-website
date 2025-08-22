@@ -1,0 +1,45 @@
+/* General Reset */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+ font-family: garamond;
+    line-height: 1.6;
+}
+
+/* Body Styling */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+ align-items: center;
+ justify-content: center;
+}
+
+/* Container for Layout */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Main Content */
+.content {
+ 	font-size: .7em;
+    margin-top: 20px;
+}
+
+.content h2 {
+    color: #6a696d;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.content p {
+    margin-bottom: 15px;
+    text-align: justify;
+color: #4d4d4d;
+}

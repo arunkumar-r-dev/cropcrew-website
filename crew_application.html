@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crew Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Tamil', Arial, sans-serif;
+            background: #f5f5f7;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 0%);
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 0.8em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 2px solid #4CAF50;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 0.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #4CAF50;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            margin-right: 10px;
+            font-size: 1.0em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: #2c3e50;
+            font-size: 10px;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 10px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+        }
+
+
+        .radio-item input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
+            accent-color: #4CAF50;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 8px;
+            border: 1.5px solid #e1e8ed;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .checkbox-item:hover {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            accent-color: #4CAF50;
+        }
+          input::placeholder,
+          textarea::placeholder {
+              font-size: 10px;
+              color: #888;
+          }
+
+
+        .submit-btn  {
+          display: block;
+          margin: 0 auto;
+          color: #264a8a;
+          font-family: Garamond, serif;
+          padding: 8px 16px;
+          font-size: 12px;
+          border: none;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-weight: 600;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+          background: white;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            color: white;
+          }
+
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 0.8em;
+            }
+
+            .form-content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .helper-text {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>பணியாளர் விண்ணப்பங்கள்</h1>
+            <p>விவசாய தொழிலாளர் வாய்ப்புகளுக்கான விண்ணப்பம்</p>
+        </div>
+
+        <div class="form-content">
+            <form id="workerApplicationForm" action="#" method="POST">
+
+                <!-- Personal Information Section -->
+                <div class="section">
+                    <h2 class="section-title">தனிப்பட்ட தகவல்கள்</h2>
+                    <p style="color: #666; margin-bottom: 20px; font-size: 10px;">உங்கள் விண்ணப்பத்தை மதிப்பிட எங்களுக்கு உதவ, துல்லியமான மற்றும் முழுமையான விவரங்களை வழங்கவும்.</p>
+
+                    <div class="form-group">
+                        <label for="fullName">முழு பெயர் <span class="required">*</span></label>
+                        <input type="text" id="fullName" name="fullName" required>
+                        <div class="helper-text">உங்கள் முழு பெயரை வழங்கவும்</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherName">தந்தையின் பெயர் <span class="required">*</span></label>
+                        <input type="text" id="fatherName" name="fatherName" required>
+                        <div class="helper-text">உங்கள் தந்தையின் பெயரை வழங்கவும்</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>பாலினம் <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="male" name="gender" value="male" required>
+                                <label for="male">ஆண்</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="female" name="gender" value="female" required>
+                                <label for="female">பெண்</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="other" name="gender" value="other" required>
+                                <label for="other">மற்றவை</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactNumber">தொடர்பு எண் <span class="required">*</span></label>
+                        <input type="tel" id="contactNumber" name="contactNumber" pattern="[0-9]{10}" required>
+                        <div class="helper-text">உங்கள் தொடர்பு எண்ணை (வாட்ஸ்அப் எண் விரும்பத்தக்கது) வழங்கவும்</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">பிறந்த தேதி <span class="required">*</span></label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="education">கல்வித் தகுதி <span class="required">*</span></label>
+                        <select id="education" name="education" required>
+                            <option value="" disabled selected hidden>கல்வித் தகுதியைத் தேர்ந்தெடுக்கவும்</option>
+                            <option value="no-education">கல்வி இல்லை</option>
+                            <option value="primary">தொடக்கக் கல்வி</option>
+                            <option value="middle">நடுநிலைக் கல்வி</option>
+                            <option value="high-school">உயர்நிலைக் கல்வி</option>
+                            <option value="higher-secondary">மேல்நிலைக் கல்வி</option>
+                            <option value="diploma">டிப்ளமோ</option>
+                            <option value="degree">பட்டம்</option>
+                            <option value="post-graduate">முதுகலை</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="village">கிராமம் <span class="required">*</span></label>
+                        <input type="text" id="village" name="village" required>
+                        <div class="helper-text">தற்போது நீங்கள் எந்த கிராமத்தில் வசிக்கிறீர்கள்</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">முகவரி <span class="required">*</span></label>
+                        <textarea id="address" name="address" required placeholder="உங்கள் நிரந்தர முகவரியை வழங்கவும்"></textarea>
+                    </div>
+                </div>
+
+                <!-- Experience and Skills Section -->
+                <div class="section">
+                    <h2 class="section-title">அனுபவம் மற்றும் திறன்</h2>
+                    <p style="color: #666; margin-bottom: 20px; font-size:10px;">உங்கள் தொடர்புடைய வேலை அனுபவம் மற்றும் திறன்களைப் பற்றிய தகவல்களை வழங்கவும்.</p>
+
+                    <div class="form-group">
+                        <label for="previousExperience">முந்தைய விவசாய அனுபவம்</label>
+                        <textarea id="previousExperience" name="previousExperience" placeholder="உங்களுக்கு ஏதேனும் அனுபவம் இருந்தால் தயவுசெய்து எங்களுக்கு தெரியப்படுத்துங்கள்"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>வேலை வகை விருப்பம் <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="fullTime" name="jobType" value="full-time" required>
+                                <label for="fullTime">முழுநேர வேலை</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="partTime" name="jobType" value="part-time" required>
+                                <label for="partTime">பகுதிநேர வேலை</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specificSkills">குறிப்பிட்ட திறன்கள்</label>
+                        <textarea id="specificSkills" name="specificSkills" placeholder="விவசாயம் தொடர்பான குறிப்பிட்ட திறன்கள் - இயந்திரங்களை இயக்குதல், உர பயன்பாடு போன்றவை"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>உடல் ரீதியான தகுதிகள் <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="physicalWork" name="physicalAbilities[]" value="physical-work">
+                                <label for="physicalWork">உடல் ரீதியாக சவாலான பணிகளை செய்யும் திறன்</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="weatherWork" name="physicalAbilities[]" value="weather-work">
+                                <label for="weatherWork">பல்வேறு வானிலை நிலைகளில் பணிபுரிதல்</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="heavyLifting" name="physicalAbilities[]" value="heavy-lifting">
+                                <label for="heavyLifting">கனமான பொருட்களை தூக்குதல்</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="longHours" name="physicalAbilities[]" value="long-hours">
+                                <label for="longHours">நீண்ட நேரம் பணிபுரிதல்</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>பயணம் செய்ய விருப்பம் <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="travelYes" name="travelWillingness" value="yes" required>
+                                <label for="travelYes">ஆம்</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="travelNo" name="travelWillingness" value="no" required>
+                                <label for="travelNo">இல்லை</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="travelLimited" name="travelWillingness" value="limited" required>
+                                <label for="travelLimited">குறிப்பிட்ட தூரம் மட்டும்</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">சமர்ப்பி</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        document.getElementById('workerApplicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Comprehensive validation
+            let isValid = true;
+            let errorMessages = [];
+
+            // Required field validation
+            const requiredFields = this.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#e74c3c';
+                    isValid = false;
+
+                    // Get field label for error message
+                    const label = field.previousElementSibling;
+                    const fieldName = label ? label.textContent.replace('*', '').trim() : field.name;
+                    errorMessages.push(`${fieldName} அவசியம்`);
+                } else {
+                    field.style.borderColor = '#4CAF50';
+                }
+            });
+
+            // Phone number validation
+            const phoneNumber = document.getElementById('contactNumber').value;
+            if (phoneNumber && !/^[6-9]\d{9}$/.test(phoneNumber)) {
+                document.getElementById('contactNumber').style.borderColor = '#e74c3c';
+                errorMessages.push('சரியான தொடர்பு எண்ணை உள்ளிடவும் (10 இலக்கங்கள்)');
+                isValid = false;
+            }
+
+
+
+            // Age validation (must be 18+)
+            const dateOfBirth = new Date(document.getElementById('dateOfBirth').value);
+            const today = new Date();
+            const age = today.getFullYear() - dateOfBirth.getFullYear();
+            if (age < 18) {
+                document.getElementById('dateOfBirth').style.borderColor = '#e74c3c';
+                errorMessages.push('வயது 18 அல்லது அதற்கு மேல் இருக்க வேண்டும்');
+                isValid = false;
+            }
+
+            // Check if at least one physical ability is selected
+            const physicalAbilities = this.querySelectorAll('input[name="physicalAbilities[]"]:checked');
+            if (physicalAbilities.length === 0) {
+                errorMessages.push('குறைந்தபட்சம் ஒரு உடல் ரீதியான தகுதியை தேர்ந்தெடுக்கவும்');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert('பிழைகள்:\n' + errorMessages.join('\n'));
+                return;
+            }
+
+            // If validation passes, submit the form
+            const formData = new FormData(this);
+            const data = {};
+
+            // Convert form data to a JS object
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'சமர்ப்பிக்கிறது...';
+            submitBtn.disabled = true;
+
+            // 🔥 Replace with your actual deployed Cloud Function URL
+            const FUNCTION_URL = " https://us-central1-my-project-goodenough.cloudfunctions.net/submitCrewApplication";
+
+            fetch(FUNCTION_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.result === 'success') {
+                    alert('விண்ணப்பம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!');
+                    this.reset();
+                    // Optionally redirect to success page
+                    // window.location.href = "index.html";
+                } else {
+                    alert('விண்ணப்பம் சமர்ப்பிக்கும்போது பிழை ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்');
+                }
+            })
+            .catch(error => {
+                console.error('Submission failed:', error);
+                alert('நெட்வொர்க் பிழை. மீண்டும் முயற்சிக்கவும்');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Phone number formatting
+        document.getElementById('contactNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            e.target.value = value;
+        });
+
+
+
+        // Form field animations
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            field.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

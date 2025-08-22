@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ta">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CropCrew Service Partner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    input::placeholder,
+    textarea::placeholder {
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <main class="max-w-3xl mx-auto p-6">
+    <!-- Title kept in English as requested -->
+    <h1 class="text-2xl text-green-500 mb-2">Become a CropCrew - Service Partner</h1>
+    <p class="text-sm text-gray-600 mb-8">
+      உங்கள் அடிப்படை விவரங்கள், இயந்திர விவரங்கள், கட்டண விவரங்கள் மற்றும் படங்களை நிரப்புங்கள்.
+    </p>
+
+    <form id="ownerForm" class="space-y-10" >
+      <!-- Basic details -->
+      <section class="bg-white p-6 rounded-xl shadow">
+        <h2 class="text-l text-blue-600 mb-4">1) அடிப்படை விவரங்கள்</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">பெயர் *</span>
+            <input required name="fullName" class="border rounded-md px-3 py-2" placeholder="உங்கள் பெயர்" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">தொலைபேசி எண் *</span>
+            <input required name="phone" type="tel" inputmode="numeric" pattern="^[0-9]{10}$" maxlength="10" class="border rounded-md px-3 py-2" placeholder="10 இலக்க எண்" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">வாட்ஸ்அப் (விருப்பம்)</span>
+            <input name="whatsapp" type="tel" inputmode="numeric" pattern="^[0-9]{10}$" maxlength="10" class="border rounded-md px-3 py-2" placeholder="10 இலக்க எண்" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">சேவை அளிக்கும் தூரம் (கிமீ)</span>
+            <input name="service_range" class="border rounded-md px-3 py-2" placeholder="எத்தனை கிமீ வரை சேவை செய்வீர்கள்?" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">கிடைக்கும் நிலை</span>
+            <input name="availability" class="border rounded-md px-3 py-2" placeholder="eg., முழுநேரம் / பகுதி நேரம் / பருவகாலம்" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">அனுபவம் (ஆண்டுகள்)</span>
+            <input name="experience_years" class="border rounded-md px-3 py-2" placeholder="eg., 2 ஆண்டுகள், 5 ஆண்டுகள்" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">மாவட்டம் *</span>
+            <input required name="district" class="border rounded-md px-3 py-2" />
+          </label>
+
+          <label class="flex flex-col gap-1">
+            <span class="text-sm font-small">தாலுகா *</span>
+            <input required name="taluk" class="border rounded-md px-3 py-2" />
+          </label>
+
+          <label class="flex flex-col gap-1 md:col-span-2">
+            <span class="text-sm font-small">கிராமம் *</span>
+            <input required name="village" class="border rounded-md px-3 py-2" />
+          </label>
+        </div>
+      </section>
+
+      <!-- Machinery list -->
+      <section class="bg-white p-6 rounded-xl shadow">
+        <h2 class="text-l text-blue-600 mb-4">2) இயந்திர விவரங்கள்</h2>
+        <div id="machinesWrapper" class="space-y-6"></div>
+      </section>
+
+      <!-- Notes & Consent -->
+      <section class="bg-white p-6 rounded-xl shadow space-y-4">
+        <h2 class="text-l text-blue-600">3) கூடுதல் குறிப்புகள் & ஒப்புதல்</h2>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">வேறு எதையாவது கூற வேண்டுமா?</span>
+          <textarea name="notes" rows="3" class="border rounded-md px-3 py-2"></textarea>
+        </label>
+
+        <label class="flex items-start gap-2">
+          <input type="checkbox" required class="mt-1" />
+          <span class="text-sm text-gray-700">
+            நான் வழங்கிய தகவல்கள் சரியானவை என்பதை உறுதிப்படுத்துகிறேன் மற்றும் CropCrew என்னை தொடர்பு கொள்ளலாம்.
+          </span>
+        </label>
+      </section>
+
+      <!-- Submit -->
+      <div class="flex justify-end">
+        <button id="submitBtn" type="submit" class="px-3 py-2 rounded-md bg-green-500 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed">
+          சமர்ப்பி
+        </button>
+      </div>
+    </form>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 hidden px-4 py-2 rounded bg-gray-900 text-white text-sm shadow"></div>
+  </main>
+
+  <!-- Templates -->
+  <template id="machineTemplate">
+    <fieldset class="machine bg-gray-50 border border-gray-200 rounded-lg p-4 relative">
+      <button type="button" class="removeMachine absolute top-2 right-2 text-xs text-red-600 ">அகற்று</button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">இயந்திர வகை *</span>
+          <select required class="border rounded-md px-3 py-2 text-xs" name="type">
+            <option value="">-- தேர்வு செய்யவும் --</option>
+            <option>டிராக்டர்</option>
+            <option>மினி டிராக்டர்</option>
+            <option>பவர் வீடர்</option>
+            <option>பவர் டில்லர்</option>
+            <option>அறுவடை இயந்திரம்</option>
+            <option>கதிரடிப்பான் இயந்திரம்</option>
+            <option>மற்றவை</option>
+          </select>
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">மாதிரி / நிறுவனம்</span>
+          <input name="model" class="border rounded-md px-3 py-2" placeholder="eg., Mahindra 575 DI" />
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">இயந்திர வயது</span>
+          <div class="relative">
+            <input name="machine_age" type="number" min="0" class="border rounded-md px-3 py-2 pr-12 w-full" placeholder="eg., 5" />
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">yrs</span>
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">பவர் (HP)</span>
+          <div class="relative">
+            <input name="horse_power" type="number" step="0.1" min="0" class="border rounded-md px-3 py-2 pr-12 w-full" placeholder="eg., 45" />
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">hp</span>
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">கட்டண வகை *</span>
+          <select required name="rateType" class="border rounded-md px-3 py-2 text-xs">
+            <option value="">-- தேர்வு செய்யவும் --</option>
+            <option value="hourly">ஒரு மணிக்கு</option>
+            <option value="daily">ஒரு நாளைக்கு</option>
+            <option value="perAcre">ஒரு ஏக்கருக்கு</option>
+          </select>
+        </label>
+
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium">கட்டணம் (₹) *</span>
+          <input required name="rate" type="number" min="0" class="border rounded-md px-3 py-2" />
+        </label>
+
+        <label class="flex flex-col gap-1 md:col-span-2">
+          <span class="text-sm font-medium">இயக்குபவர் சேர்க்கப்பட்டுள்ளது?</span>
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-1">
+              <input type="radio" name="operatorIncluded" value="true" class="h-4 w-4" required>
+              <span>ஆம்</span>
+            </label>
+            <label class="flex items-center gap-1">
+              <input type="radio" name="operatorIncluded" value="false" class="h-4 w-4">
+              <span>இல்லை</span>
+            </label>
+          </div>
+        </label>
+
+        <label class="flex flex-col gap-1 md:col-span-2">
+          <span class="text-sm font-medium">குறைந்தபட்ச மணிநேரம் (மணிநேரம் என்றால்)</span>
+          <input name="minHours" type="number" min="0" class="border rounded-md px-3 py-2" />
+        </label>
+
+        <label class="flex flex-col gap-1 md:col-span-2">
+          <span class="text-sm font-medium">பிற கட்டணங்கள் (இருந்தால்)</span>
+          <input name="transportCharge" type="text" class="border rounded-md px-3 py-2" />
+        </label>
+
+        <label class="flex flex-col gap-1 md:col-span-2">
+          <span class="text-sm font-medium">படங்களை பதிவேற்றவும் (அதிகபட்சம் 5)</span>
+          <input accept="image/*" multiple name="images" type="file" class="border rounded-md px-3 py-2" />
+          <small class="text-xs text-gray-500">முதல் படம் கவர் படமாக பயன்படுத்தப்படும்.</small>
+          <div data-preview class="mt-2 flex flex-wrap gap-2"></div>
+        </label>
+      </div>
+
+      <div data-footer class="mt-4 flex justify-end"></div>
+    </fieldset>
+  </template>
+
+  <script>
+    const CLOUD_FUNCTION_URL = "https://us-central1-my-project-goodenough.cloudfunctions.net/submitMachinaryPartner";
+
+    const form = document.getElementById("ownerForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const machinesWrapper = document.getElementById("machinesWrapper");
+    const machineTemplate = document.getElementById("machineTemplate");
+    const toastEl = document.getElementById("toast");
+    let addBtn;
+
+    const toast = (msg, type = "info") => {
+      toastEl.textContent = msg;
+      toastEl.classList.remove("hidden");
+      toastEl.classList.toggle("bg-green-600", type === "success");
+      toastEl.classList.toggle("bg-red-600", type === "error");
+      setTimeout(() => toastEl.classList.add("hidden"), 4000);
+    };
+
+    function createAddButton() {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "+ இன்னொரு இயந்திரத்தை சேர்க்க";
+      btn.className = "text-sm px-3 py-1.5 rounded-md bg-indigo-500 text-white hover:bg-indigo-700";
+      btn.addEventListener("click", addMachine);
+      return btn;
+    }
+
+    function wireMachine(fieldset) {
+      fieldset.querySelector(".removeMachine").addEventListener("click", () => {
+        fieldset.remove();
+        placeAddButton();
+        updateRemoveButtons();
+      });
+
+      const input = fieldset.querySelector('[name="images"]');
+      const preview = fieldset.querySelector("[data-preview]");
+      input.addEventListener("change", () => {
+        preview.innerHTML = "";
+        const files = Array.from(input.files).slice(0, 5);
+        if (input.files.length > 5) {
+          toast("முதல் 5 படங்களே பயன்படுத்தப்படும்", "error");
+        }
+        files.forEach(file => {
+          const img = document.createElement("img");
+          img.src = URL.createObjectURL(file);
+          img.className = "h-16 w-16 object-cover rounded border";
+          preview.appendChild(img);
+        });
+      });
+    }
+
+    function placeAddButton() {
+      if (!addBtn) addBtn = createAddButton();
+      if (addBtn.parentElement) addBtn.parentElement.removeChild(addBtn);
+
+      const all = machinesWrapper.querySelectorAll("fieldset.machine");
+      if (all.length) {
+        const lastFooter = all[all.length - 1].querySelector("[data-footer]");
+        lastFooter.appendChild(addBtn);
+      }
+    }
+
+    function updateRemoveButtons() {
+      const cards = [...machinesWrapper.querySelectorAll("fieldset.machine")];
+      cards.forEach((fs, idx) => {
+        const btn = fs.querySelector(".removeMachine");
+        if (!btn) return;
+        if (cards.length === 1 || idx === 0) {
+          btn.classList.add("hidden");
+          btn.disabled = true;
+        } else {
+          btn.classList.remove("hidden");
+          btn.disabled = false;
+        }
+      });
+    }
+
+    function addMachine() {
+      const clone = machineTemplate.content.cloneNode(true);
+      const fieldset = clone.querySelector("fieldset.machine");
+      machinesWrapper.appendChild(clone);
+      wireMachine(fieldset);
+      placeAddButton();
+      updateRemoveButtons();
+    }
+
+          // Init
+      addMachine();
+      updateRemoveButtons();
+
+      // Enforce 10 digits live for phone & whatsapp
+      ["phone", "whatsapp"].forEach((field) => {
+        if (!form[field]) return;
+        form[field].addEventListener("input", (e) => {
+          const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+          e.target.value = digits;
+        });
+      });
+
+      /*  Validation helpers- */
+
+      function onlyDigits(v) {
+        return (v || "").replace(/\D/g, "");
+      }
+
+      function markError(el) {
+        if (!el) return;
+        el.classList.add("border-red-500");
+      }
+
+      function clearErrors() {
+        form.querySelectorAll(".border-red-500").forEach((el) =>
+          el.classList.remove("border-red-500")
+        );
+      }
+
+      function validateTopLevel(owner) {
+        const errors = [];
+        const firstEls = [];
+
+        const mustHave = [
+          { name: "fullName", label: "பெயர்" },
+          { name: "phone", label: "தொலைபேசி எண்" },
+          { name: "district", label: "மாவட்டம்" },
+          { name: "taluk", label: "தாலுகா" },
+          { name: "village", label: "கிராமம்" },
+        ];
+
+        mustHave.forEach(({ name, label }) => {
+          const el = form[name];
+          if (!owner[name] || !owner[name].toString().trim()) {
+            errors.push(`${label} அவசியம்`);
+            markError(el);
+            if (!firstEls.length) firstEls.push(el);
+          }
+        });
+
+        // phone specific
+        if (onlyDigits(owner.phone).length !== 10) {
+          const el = form.phone;
+          markError(el);
+          errors.push("தொலைபேசி எண் 10 இலக்கங்கள் இருக்க வேண்டும்");
+          if (!firstEls.length) firstEls.push(el);
+        }
+
+        return { errors, first: firstEls[0] || null };
+      }
+
+      function validateMachines(machineNodes) {
+        const errors = [];
+        let first = null;
+
+        machineNodes.forEach((fs, idx) => {
+          const get = (name) => fs.querySelector(`[name="${name}"]`);
+
+          // required fields inside machine
+          const requireds = [
+            { el: get("type"), label: `இயந்திர வகை (Machine #${idx + 1})` },
+            { el: get("rateType"), label: `கட்டண வகை (Machine #${idx + 1})` },
+            { el: get("rate"), label: `கட்டணம் (Machine #${idx + 1})` },
+          ];
+
+          requireds.forEach(({ el, label }) => {
+            if (!el || !el.value || !el.value.toString().trim()) {
+              errors.push(`${label} அவசியம்`);
+              markError(el);
+              if (!first) first = el;
+            }
+          });
+
+          // operatorIncluded radio required
+          const yes = fs.querySelector('input[name="operatorIncluded"][value="true"]');
+          const no = fs.querySelector('input[name="operatorIncluded"][value="false"]');
+          if (!(yes?.checked || no?.checked)) {
+            errors.push(`"இயக்குபவர் சேர்க்கப்பட்டுள்ளது?" அவசியம் (Machine #${idx + 1})`);
+            markError(yes?.closest("label") || no?.closest("label") || fs);
+            if (!first) first = yes || no || fs;
+          }
+
+          // optional stronger numeric checks
+          const rate = Number(get("rate")?.value || 0);
+          if (isNaN(rate) || rate <= 0) {
+            errors.push(`கட்டணம் சரியாக இல்லை (Machine #${idx + 1})`);
+            const el = get("rate");
+            markError(el);
+            if (!first) first = el;
+          }
+        });
+
+        return { errors, first };
+      }
+
+      /* submit checks */
+
+        form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        clearErrors();
+        submitBtn.disabled = true;
+
+        // Check ALL required fields manually
+          const requiredInputs = form.querySelectorAll("[required]");
+          for (const input of requiredInputs) {
+            if (!input.value.trim() || (input.type === "checkbox" && !input.checked)) {
+              markError(input);
+              toast("அனைத்து * புலங்களையும் நிரப்பவும்", "error");
+              input.scrollIntoView({ behavior: "smooth", block: "center" });
+              input.focus();
+              submitBtn.disabled = false;
+              return;
+            }
+          }
+
+        try {
+          const machineNodes = [...machinesWrapper.querySelectorAll("fieldset.machine")];
+
+          // Collect owner data
+          const owner = {
+            fullName: form.fullName.value.trim(),
+            phone: onlyDigits(form.phone.value),
+            whatsapp: onlyDigits(form.whatsapp?.value).slice(0, 10),
+            service_range: form.service_range?.value?.trim() || "",
+            availability: form.availability?.value?.trim() || "",
+            experience_years: form.experience_years?.value?.trim() || "",
+            district: form.district.value.trim(),
+            taluk: form.taluk.value.trim(),
+            village: form.village.value.trim(),
+          };
+
+          // --- Validate required fields ---
+          const topCheck = validateTopLevel(owner);
+          if (topCheck.errors.length) {
+            toast(topCheck.errors[0], "error");
+            topCheck.first?.scrollIntoView({ behavior: "smooth", block: "center" });
+            topCheck.first?.focus();
+            submitBtn.disabled = false;
+            return; // STOP submit
+          }
+
+          if (machineNodes.length === 0) {
+            toast("குறைந்தது ஒரு இயந்திர விவரமாவது சேர்க்கவும்", "error");
+            submitBtn.disabled = false;
+            return; // STOP submit
+          }
+
+          const machineCheck = validateMachines(machineNodes);
+          if (machineCheck.errors.length) {
+            toast(machineCheck.errors[0], "error");
+            machineCheck.first?.scrollIntoView({ behavior: "smooth", block: "center" });
+            machineCheck.first?.focus();
+            submitBtn.disabled = false;
+            return; // STOP submit
+          }
+
+          // If we reach here, all validation passed
+          const machines = machineNodes.map((fs) => {
+            const get = (name) => fs.querySelector(`[name="${name}"]`);
+            return {
+              type: get("type").value,
+              model: get("model").value,
+              machine_age: get("machine_age").value ? Number(get("machine_age").value) : null,
+              horse_power: get("horse_power").value ? Number(get("horse_power").value) : null,
+              rateType: get("rateType").value,
+              rate: Number(get("rate").value),
+              minHours: get("minHours").value ? Number(get("minHours").value) : null,
+              operatorIncluded: fs.querySelector('input[name="operatorIncluded"][value="true"]')?.checked || false,
+              transportCharge: get("transportCharge").value || "",
+              images: []
+            };
+          });
+
+          const payload = { owner, machines, notes: form.notes.value || "" };
+
+          const fd = new FormData();
+          fd.append("payload", JSON.stringify(payload));
+
+          machineNodes.forEach((fs, i) => {
+            const fileInput = fs.querySelector('[name="images"]');
+            const files = Array.from(fileInput.files).slice(0, 5);
+            files.forEach((file) => fd.append(`images_${i}`, file, file.name));
+          });
+
+          const res = await fetch(CLOUD_FUNCTION_URL, { method: "POST", body: fd });
+          if (!res.ok) throw new Error("Server error");
+
+          toast("சமர்ப்பிக்கப்பட்டது! விரைவில் தொடர்பு கொள்கிறோம்.", "success");
+          form.reset();
+          machinesWrapper.innerHTML = "";
+          addMachine();
+        } catch (err) {
+          toast(err.message || "ஏதோ தவறு நடந்துள்ளது", "error");
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+
+  </script>
+</body>
+</html>

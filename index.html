@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CropCrew</title>
+  <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+</head>
+<body>
+
+  <nav>
+    <a href="#hero">
+    <img src="images/logo_ket.jpg" alt="Logo" class="nav-logo">
+  </a>
+    <a href="#about">About Us</a>
+    <a href="#solutions">Our Solutions</a>
+    <a href="#contact">Contact Us</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+      <!-- Image will be loaded here from css -->
+  </section>
+
+
+      <!-- Main Content -->
+      <section class="main-content" id="about">
+              <div class="section-title">
+                  <h2>About Us</h2>
+                  <p>At CropCrew, we are transforming rural farmland into smart, GPS-enabled projects.<br><br> By combining technology with agriculture, our platform delivers real-time oversight, seamless task coordination, and transparency - empowering farmers and stakeholders across the entire crop lifecycle.</p>
+              </div>
+
+              <div class="three-pillars">
+                  <div class="pillar-card">
+                      <h3>Mission</h3>
+                      <p>Optimize agricultural productivity through data-driven solutions and operational excellence.</p>
+                  </div>
+
+                  <div class="pillar-card">
+                      <h3>Vision</h3>
+                      <p>To be a leader in precision agriculture technology and farm management systems.</p>
+                  </div>
+
+                  <div class="pillar-card">
+                      <h3>Approach</h3>
+                      <p>Scalable platform delivering customized solutions that maximize yield and operational efficiency.</p>
+                  </div>
+                  <div class="pillar-card">
+                      <h3>Impact</h3>
+                      <p>Technology-enabled services that increase farmer profitability and accelerate rural economic development.</p>
+                  </div>
+
+              </div>
+
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats-section">
+          <div class="container">
+              <div class="stats-grid">
+                  <div class="stat-item">
+                      <h4>15+</h4>
+                      <p>Farmers on Board</p>
+                  </div>
+                  <div class="stat-item">
+                      <h4>25+</h4>
+                      <p>Acres Serviced</p>
+                  </div>
+                  <div class="stat-item">
+                      <h4>1+</h4>
+                      <p>Years of Experience</p>
+                  </div>
+                  <div class="stat-item">
+                      <h4>95%</h4>
+                      <p>Client Satisfaction</p>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+            <h2>Ready to Transform Your Farm Operations?</h2>
+            <p>CropCrew is already serving selected regions - and we're expanding rapidly. <br>
+               Register your interest to bring our solutions to your area.</p>
+              <a href="#contact" class="cta-button">Get Started Today</a>
+
+      </section>
+
+
+
+  <!-- Our Solutions Section -->
+   <section class="solutions" id="solutions">
+    <h1>Our Solutions</h1>
+    <p>We provide services across the entire crop lifecycle.</p>
+
+    <div class="solution-carousel">
+    <div class="solution-container">
+        <div class="solution-item" style="background-image: url('images/land-prep.png')">
+        </div>
+        <div class="solution-item" style="background-image: url('images/plantation.png')">
+        </div>
+        <div class="solution-item" style="background-image: url('images/maintenance.png')">
+        </div>
+        <div class="solution-item" style="background-image: url('images/harvest.png')">
+        </div>
+        <div class="solution-item" style="background-image: url('images/post-harvest.png')">
+        </div>
+  </div>
+
+
+  </div>
+
+      <div class="carousel-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  const container = document.querySelector('.solution-container');
+  const dots = document.querySelectorAll('.carousel-dots .dot');
+  const items = document.querySelectorAll('.solution-item');
+  const total = dots.length;
+  let currentIndex = 0;
+  const intervalTime = 5000; // 5 seconds
+
+  function setActiveDot(index) {
+    dots.forEach(dot => dot.classList.remove('active'));
+    if (dots[index]) {
+      dots[index].classList.add('active');
+    }
+  }
+
+  function scrollToIndex(index) {
+    const itemWidth = items[0].offsetWidth; // Get actual item width
+    container.scrollTo({
+      left: index * itemWidth,
+      behavior: 'smooth',
+    });
+    setActiveDot(index);
+    currentIndex = index;
+  }
+
+  function autoSlide() {
+    currentIndex = (currentIndex + 1) % total;
+    scrollToIndex(currentIndex);
+  }
+
+  let slideInterval = setInterval(autoSlide, intervalTime);
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      clearInterval(slideInterval);
+      scrollToIndex(i);
+      slideInterval = setInterval(autoSlide, intervalTime);
+    });
+  });
+
+  container.addEventListener('scroll', () => {
+    const itemWidth = items[0].offsetWidth;
+    const scrollLeft = container.scrollLeft;
+    const index = Math.round(scrollLeft / itemWidth);
+    if (index !== currentIndex) {
+      setActiveDot(index);
+      currentIndex = index;
+    }
+  });
+</script>
+
+
+<!-- Download App Section -->
+  <section class="download-app" id="download-app">
+  <h2>Download CropCrew</h2>
+  <p>Get CropCrew on your mobile device for easy, on-the-go crop management and operational control.</p>
+  <div class="app-images">
+    <img src="images/phone-mockup1.png" alt="App Screenshot 1" class="app-screenshot" />
+    <img src="images/phone-mockup2.png" alt="App Screenshot 2" class="app-screenshot" />
+    <img src="images/phone-mockup3.png" alt="App Screenshot 3" class="app-screenshot" />
+  </div>
+  <a href="https://play.google.com/store/apps/details?id=in.cropcrew.app" target="_blank" class="google-play-btn" aria-label="Download on Google Play">
+    <img src="images/google-play-badge.png" alt="Get it on Google Play" />
+  </a>
+</section>
+
+
+  <!-- Contact Section -->
+  <section class="contact-us" id="contact">
+    <div class="contact-card">
+      <h2>Contact Us</h2>
+      <p>No. 290, Vengateshwara Mandapam Street, <br>
+        Madapalli, Tirupathur, 635653</p>
+      <p><a href="https://maps.app.goo.gl/TE8a8wKiUptndcG29" target="_blank">Get Directions</a></p>
+
+      <h3>Phone</h3>
+      <p>+91 7871432748</p>
+
+      <h3>Email</h3>
+      <p><a href="mailto:info@cropcrew.in">info@cropcrew.in</a></p>
+
+      <h3>Follow us on LinkedIn</h3>
+      <a href="https://www.linkedin.com/company/ketzero-agritech-solutions/" target="_blank">
+        <img src="images/Linkedin.jpg" alt="LinkedIn Logo" class="logo" style="width:40px; margin-top:10px;" />
+      </a>
+    </div>
+  </section>
+
+
+  <section class="survey-button-section" style="text-align:center; padding: 40px 0;">
+    <button class="survey-btn" onclick="window.location.href='take_survey.html'">
+      Tell Us What You Grow
+    </button>
+  </section>
+
+
+
+  <!-- Footer -->
+  <footer class="legal_section">
+    <hr style="border: 0.1px solid #ddd; margin: 20px 0;">
+    <div class="legal_links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms-of-use.html">Terms of Use</a>
+      <a href="disclaimer.html">Disclaimer</a>
+    </div>
+    <p>&copy; 2025 KetZero Agritech Solutions. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
